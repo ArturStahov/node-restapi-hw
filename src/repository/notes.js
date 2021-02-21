@@ -1,47 +1,50 @@
-const { v4: uuid } = require('uuid')
-const db = require('../db')
+
+const { ObjectID } = require('mongodb')
+const { HttpCode } = require('../helpers/constants.js')
+const { ErrorHandler } = require('../helpers/errorHandler')
 
 
 class NotesRepository {
-    constructor() {
+    constructor(client) {
+        this.collection = client.db().collection('notes')
     }
 
-    getAll() {
-        return db.get('notes')
-            .value()
-    }
-
-    getByID(id) {
-        return db.get('notes')
-            .find({ id })
-            .value()
-    }
-
-    create(body) {
-        const id = uuid()
-        const recordNote = {
-            id,
-            ...body
+    _getMongoId(id) {
+        try {
+            return ObjectID(id)
+        } catch (e) {
+            throw new ErrorHandler(HttpCode.BAD_REQUEST, `MongoDb _id:${e.message}`, "Bad Request")
         }
-        db.get('notes')
-            .push(recordNote)
-            .write()
-        return recordNote
     }
 
-    update(id, body) {
-        const recordNote = db.get('notes')
-            .find({ id })
-            .assign(body).value()
-        db.write()
-        return recordNote.id ? recordNote : null
+    async getAll() {
+        const results = await this.collection.find({}).toArray()
+        return results
     }
 
-    remove(id) {
-        const [record] = db.get('notes')
-            .remove({ id })
-            .write()
-        return record
+    async getByID(id) {
+        const objectId = this._getMongoId(id);
+        const [result] = await this.collection.find({ _id: objectId }).toArray()
+        return result
+    }
+
+    async create(body) {
+        const { ops: [result] } = await this.collection.insertOne(body)
+        return result
+
+    }
+
+    async update(id, body) {
+        const objectId = this._getMongoId(id);
+        const { value: result } = await this.collection.findOneAndUpdate({ _id: objectId }, { $set: body }, { returnOriginal: false })
+        return result
+    }
+
+    async remove(id) {
+
+        const objectId = this._getMongoId(id);
+        const { value: result } = await this.collection.findOneAndDelete({ _id: objectId })
+        return result
     }
 }
 

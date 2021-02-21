@@ -1,34 +1,38 @@
 const { NotesRepository } = require('../repository')
+const db = require('../db/db-config.js')
 
 class NotesServices {
     constructor() {
-        this.repositories = {
-            notes: new NotesRepository()
-        }
+        process.nextTick(async () => {
+            const client = await db
+            this.repositories = {
+                notes: new NotesRepository(client)
+            }
+        })
     }
 
-    getAll() {
-        const data = this.repositories.notes.getAll()
+    async getAll() {
+        const data = await this.repositories.notes.getAll()
         return data
     }
 
-    getByID({ id }) {
-        const data = this.repositories.notes.getByID(id)
+    async getByID({ id }) {
+        const data = await this.repositories.notes.getByID(id)
         return data
     }
 
-    create(body) {
-        const data = this.repositories.notes.create(body)
+    async create(body) {
+        const data = await this.repositories.notes.create(body)
         return data
     }
 
-    update({ id }, body) {
-        const data = this.repositories.notes.update(id, body)
+    async update({ id }, body) {
+        const data = await this.repositories.notes.update(id, body)
         return data
     }
 
-    remove({ id }) {
-        const data = this.repositories.notes.remove(id)
+    async remove({ id }) {
+        const data = await this.repositories.notes.remove(id)
         return data
     }
 }
