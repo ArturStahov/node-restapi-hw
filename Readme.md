@@ -1,3 +1,13 @@
 ## ReastApi Node
 
-- branch 02-express: restApi with lowdb
+- branch 03-mongodb: restApi with mongodb 
+
+### use libs:
+
+- mongodb;
+- morgan;
+- joi;
+- express;
+- dotenv;
+- cors;
+- cross-env;
