@@ -27,7 +27,7 @@ const schemaUpdate = Joi.object({
 
     isImportant: Joi.boolean().required(),
     owner: Joi.string().optional()
-})
+}).min(1);
 
 const validate = (schema, body, next) => {
     const { error } = schema.validate(body)

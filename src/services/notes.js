@@ -1,5 +1,5 @@
 const { NotesRepository } = require('../repository')
-const db = require('../db/db-config.js')
+
 
 class NotesServices {
     constructor() {
