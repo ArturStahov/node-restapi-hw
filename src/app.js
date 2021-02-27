@@ -22,12 +22,6 @@ app.use(express.json())
 app.use('/api/notes', routerNotes)
 
 
-
-
-
-
-
-
 //error 404
 app.use((req, res, next) => {
     res.status(HttpCode.NOT_FOUND).json({

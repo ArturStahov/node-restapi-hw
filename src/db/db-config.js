@@ -1,4 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const createUrl = () => {
@@ -10,13 +10,31 @@ const createUrl = () => {
 
 const uri = createUrl()
 
-process.on('SIGINT', async () => {
-    const client = await db
-    client.close()
-    console.log('Connection for DB disconnected and app terminated')
-    process.exit()
+const db = mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+});
+
+mongoose.connection.on('error', (e) => {
+    console.log('Mongoose connection error!')
 })
 
-const db = new MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on('connected', (e) => {
+    console.log('Mongoose connection success!')
+})
+
+mongoose.connection.on('disconnected', (e) => {
+    console.log('Mongoose disconnected success!')
+})
+
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Connection for DB disconnected and app terminated')
+        process.exit(1)
+    })
+})
+
 
 module.exports = db
