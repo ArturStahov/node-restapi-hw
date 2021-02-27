@@ -1,49 +1,44 @@
-
-const { ObjectID } = require('mongodb')
+const Notes = require('../schemas/notes.js')
+const ObjectId = require('mongoose').Types.ObjectId;
 const { HttpCode } = require('../helpers/constants.js')
 const { ErrorHandler } = require('../helpers/errorHandler')
 
-
 class NotesRepository {
-    constructor(client) {
-        this.collection = client.db().collection('notes')
-    }
-
-    _getMongoId(id) {
-        try {
-            return ObjectID(id)
-        } catch (e) {
-            throw new ErrorHandler(HttpCode.BAD_REQUEST, `MongoDb _id:${e.message}`, "Bad Request")
-        }
+    constructor() {
+        this.model = Notes
     }
 
     async getAll() {
-        const results = await this.collection.find({}).toArray()
+        const results = await this.model.find({})
         return results
     }
 
+    _checkId(id) {
+        if (!ObjectId.isValid(id)) {
+            throw new ErrorHandler(HttpCode.BAD_REQUEST, `id: not valid!`, "Bad Request")
+        }
+    }
+
     async getByID(id) {
-        const objectId = this._getMongoId(id);
-        const [result] = await this.collection.find({ _id: objectId }).toArray()
+        this._checkId(id)
+        const result = await this.model.findOne({ _id: id })
         return result
     }
 
     async create(body) {
-        const { ops: [result] } = await this.collection.insertOne(body)
+        const result = await this.model.create(body)
         return result
-
     }
 
     async update(id, body) {
-        const objectId = this._getMongoId(id);
-        const { value: result } = await this.collection.findOneAndUpdate({ _id: objectId }, { $set: body }, { returnOriginal: false })
+        this._checkId(id)
+        const result = await this.model.findByIdAndUpdate({ _id: id }, { ...body }, { new: true })
         return result
     }
 
     async remove(id) {
-
-        const objectId = this._getMongoId(id);
-        const { value: result } = await this.collection.findOneAndDelete({ _id: objectId })
+        this._checkId(id)
+        const result = await this.model.findByIdAndRemove({ _id: id })
         return result
     }
 }

@@ -1,14 +1,11 @@
 const { NotesRepository } = require('../repository')
-const db = require('../db/db-config.js')
+
 
 class NotesServices {
     constructor() {
-        process.nextTick(async () => {
-            const client = await db
-            this.repositories = {
-                notes: new NotesRepository(client)
-            }
-        })
+        this.repositories = {
+            notes: new NotesRepository()
+        }
     }
 
     async getAll() {

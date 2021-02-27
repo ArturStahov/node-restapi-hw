@@ -1,10 +1,11 @@
 ## ReastApi Node
 
-- branch 03-mongodb: restApi with mongodb 
+- branch 03-mongodb-mongoose: restApi with mongodb
 
 ### use libs:
 
 - mongodb;
+- mongoose;
 - morgan;
 - joi;
 - express;

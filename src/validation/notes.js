@@ -11,7 +11,8 @@ const schemaCreate = Joi.object({
         .max(100)
         .required(),
 
-    isImportant: Joi.boolean().required()
+    isImportant: Joi.boolean().required(),
+    owner: Joi.string().optional()
 })
 
 const schemaUpdate = Joi.object({
@@ -24,8 +25,9 @@ const schemaUpdate = Joi.object({
         .max(100)
         .optional(),
 
-    isImportant: Joi.boolean().required()
-})
+    isImportant: Joi.boolean().required(),
+    owner: Joi.string().optional()
+}).min(1);
 
 const validate = (schema, body, next) => {
     const { error } = schema.validate(body)
