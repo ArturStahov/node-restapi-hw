@@ -15,7 +15,8 @@ const notesSchema = new Schema({
         required: [true, 'isImportant is required']
     },
     owner: {
-        name: String,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'user'
     }
 
 },

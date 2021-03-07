@@ -25,8 +25,8 @@ class NotesRepository {
         return result
     }
 
-    async create(body) {
-        const result = await this.model.create(body)
+    async create(body, userId) {
+        const result = await this.model.create({ ...body, owner: userId })
         return result
     }
 

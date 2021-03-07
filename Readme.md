@@ -1,6 +1,9 @@
 ## ReastApi Node
 
-- branch 03-mongodb-mongoose: restApi with mongodb
+### branch 04-auth-mongodb: restApi with mongodb
+
+- CRUD private collection;
+- user signup login logout;
 
 ### use libs:
 
@@ -12,3 +15,7 @@
 - dotenv;
 - cors;
 - cross-env;
+- jsonwebtoken;
+- passport;
+- passport-jwt;
+- bcryptjs;

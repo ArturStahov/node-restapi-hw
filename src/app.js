@@ -5,6 +5,7 @@ const path = require('path')
 const logger = require('morgan');
 const { HttpCode } = require('./helpers/constants.js')
 const routerNotes = require('./api/notes')
+const routerUsers = require('./api/users')
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use(logger("common", {
 app.use(cors())
 app.use(express.json())
 app.use('/api/notes', routerNotes)
+app.use('/api/users', routerUsers)
 
 
 //error 404

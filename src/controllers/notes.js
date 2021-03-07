@@ -44,7 +44,8 @@ const getByID = async (req, res, next) => {
 
 const create = async (req, res, next) => {
     try {
-        const note = await notesService.create(req.body)
+        const userId = req.user.id
+        const note = await notesService.create(req.body, userId)
         res.status(HttpCode.CREATED).json({
             status: 'success',
             code: HttpCode.CREATED,

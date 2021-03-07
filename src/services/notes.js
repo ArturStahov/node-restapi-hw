@@ -18,8 +18,8 @@ class NotesServices {
         return data
     }
 
-    async create(body) {
-        const data = await this.repositories.notes.create(body)
+    async create(body, userId) {
+        const data = await this.repositories.notes.create(body, userId)
         return data
     }
 
