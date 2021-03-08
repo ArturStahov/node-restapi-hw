@@ -3,8 +3,6 @@ const { Strategy, ExtractJwt } = require('passport-jwt')
 require('dotenv').config();
 const { UserService } = require('../services')
 
-
-
 const SECRET_KEY = process.env.JWT_SECRET_KEY
 
 const params = {
@@ -12,9 +10,7 @@ const params = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 }
 
-
 passports.use(new Strategy(params, async (payload, done) => {
-
     try {
         const service = new UserService()
         const user = await service.findByID(payload.id)
@@ -24,11 +20,8 @@ passports.use(new Strategy(params, async (payload, done) => {
         if (!user.token) {
             return done(null, false)
         }
-
         return done(null, user)
-        console.log("🚀 ~ file: passport.js ~ line 29 ~ passport.use ~ user", user)
     } catch (error) {
         done(e)
     }
-
 }));

@@ -8,13 +8,13 @@ class NotesServices {
         }
     }
 
-    async getAll() {
-        const data = await this.repositories.notes.getAll()
+    async getAll(userId) {
+        const data = await this.repositories.notes.getAll(userId)
         return data
     }
 
-    async getByID({ id }) {
-        const data = await this.repositories.notes.getByID(id)
+    async getByID({ id }, userId) {
+        const data = await this.repositories.notes.getByID(id, userId)
         return data
     }
 
@@ -23,13 +23,13 @@ class NotesServices {
         return data
     }
 
-    async update({ id }, body) {
-        const data = await this.repositories.notes.update(id, body)
+    async update({ id }, body, userId) {
+        const data = await this.repositories.notes.update(id, body, userId)
         return data
     }
 
-    async remove({ id }) {
-        const data = await this.repositories.notes.remove(id)
+    async remove({ id }, userId) {
+        const data = await this.repositories.notes.remove(id, userId)
         return data
     }
 }

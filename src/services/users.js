@@ -1,6 +1,5 @@
 const { UsersRepository } = require('../repository')
 
-
 class UserServices {
     constructor() {
         this.repositories = {
@@ -12,17 +11,16 @@ class UserServices {
         const data = await this.repositories.users.create(body)
         return data
     }
+
     async findByEmail(email) {
         const data = await this.repositories.users.findByEmail(email)
         return data
     }
+
     async findByID(id) {
         const data = await this.repositories.users.findByID(id)
         return data
     }
-
-
-
 }
 
 module.exports = UserServices

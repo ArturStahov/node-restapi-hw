@@ -2,12 +2,11 @@ const express = require('express')
 const controllersUsers = require('../../controllers/users.js')
 const router = express.Router()
 const guard = require('../../helpers/guard')
-// const { validateCreateNotes, validateUpdateNotes } = require('../../validation/notes.js')
+const { validateCreateUser } = require('../../validation/users.js')
 
-router
-    .post('/registration', controllersUsers.reg)
-    .post('/login', controllersUsers.login)
-    .post('/logout', guard, controllersUsers.logout)
+router.post('/registration', validateCreateUser, controllersUsers.reg)
+router.post('/login', controllersUsers.login)
+router.post('/logout', guard, controllersUsers.logout)
 
 
 module.exports = router

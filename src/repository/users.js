@@ -20,17 +20,17 @@ class UsersRepository {
     }
 
     async updateToken(id, token) {
+        this._checkId(id)
         await this.model.updateOne({ _id: id }, { token })
     }
     async findByID(id) {
         this._checkId(id)
-        const result = await this.model.findOne({ _id: id })
+        const result = await this.model.findOne({ _id: id }).select("-__v")
         return result
     }
 
     async findByEmail(email) {
-        this._checkId(id)
-        const result = await this.model.findOne({ email })
+        const result = await this.model.findOne({ email }).select("-__v")
         return result
     }
 

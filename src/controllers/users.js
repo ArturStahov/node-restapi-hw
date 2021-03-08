@@ -9,7 +9,12 @@ const reg = async (req, res, next) => {
         const { name, email, password } = req.body
         const user = await serviceUser.findByEmail(email)
         if (user) {
-            throw new ErrorHandler(HttpCode.CONFLICT, 'This email is already use', 'Conflict')
+            return res.status(HttpCode.CONFLICT).json({
+                status: 'error',
+                code: HttpCode.CONFLICT,
+                data: 'Conflict',
+                message: 'Email is already use',
+            })
         }
         const newUser = await serviceUser.create({ name, email, password })
         const token = await serviceAuth.login({ email, password })

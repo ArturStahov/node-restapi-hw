@@ -1,6 +1,7 @@
 const { UsersRepository } = require('../repository')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
+
 const SECRET_KEY = process.env.JWT_SECRET_KEY
 
 class AuthServices {
@@ -12,7 +13,7 @@ class AuthServices {
 
     async login({ email, password }) {
         const user = await this.repositories.users.findByEmail(email)
-        const isValidPassword = await user.validPassword(password)
+        const isValidPassword = await user?.validPassword(password)
         if (!user || !isValidPassword) {
             return null
         }

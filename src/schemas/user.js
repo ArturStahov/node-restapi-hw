@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcryptjs');
+
 const SALT_FACTOR = 6
 
 const userSchema = new Schema({
@@ -10,6 +11,7 @@ const userSchema = new Schema({
         maxlength: 25,
         default: 'No-name'
     },
+
     email: {
         type: String,
         minlength: 3,
@@ -25,10 +27,8 @@ const userSchema = new Schema({
         type: String,
         default: null,
     }
-
 },
     {
-        versionKey: false,
         timestamps: true
     }
 );
@@ -38,6 +38,7 @@ userSchema.path('email').validate(function (value) {
     const regexp = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/
     return regexp.test(String(value).toLowerCase())
 })
+
 //hook salt password begin save in db
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
@@ -50,7 +51,6 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.validPassword = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
-
 
 const User = mongoose.model('user', userSchema)
 
