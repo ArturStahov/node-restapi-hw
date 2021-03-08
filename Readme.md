@@ -19,3 +19,5 @@
 - passport;
 - passport-jwt;
 - bcryptjs;
+- helmet;
+- express-rate-limit;
