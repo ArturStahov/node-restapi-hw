@@ -6,7 +6,6 @@ class ErrorHandler extends Error {
         this.message = message
         this.data = data
     }
-
 }
 
 module.exports = {

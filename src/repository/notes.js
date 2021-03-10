@@ -8,37 +8,43 @@ class NotesRepository {
         this.model = Notes
     }
 
-    async getAll() {
-        const results = await this.model.find({})
-        return results
-    }
-
     _checkId(id) {
         if (!ObjectId.isValid(id)) {
             throw new ErrorHandler(HttpCode.BAD_REQUEST, `id: not valid!`, "Bad Request")
         }
     }
 
-    async getByID(id) {
+    async getAll(userId) {
+        const results = await this.model.find({ owner: userId }, { "__v": 0 }).populate({
+            path: 'owner',
+            select: 'name email -_id'
+        })
+        return results
+    }
+
+    async getByID(id, userId) {
         this._checkId(id)
-        const result = await this.model.findOne({ _id: id })
+        const result = await this.model.findOne({ _id: id, owner: userId }).select("-__v").populate({
+            path: 'owner',
+            select: 'name email -_id'
+        })
         return result
     }
 
-    async create(body) {
-        const result = await this.model.create(body)
+    async create(body, userId) {
+        const result = await this.model.create({ ...body, owner: userId })
         return result
     }
 
-    async update(id, body) {
+    async update(id, body, userId) {
         this._checkId(id)
-        const result = await this.model.findByIdAndUpdate({ _id: id }, { ...body }, { new: true })
+        const result = await this.model.findByIdAndUpdate({ _id: id, owner: userId }, { ...body }, { new: true }).select("-__v")
         return result
     }
 
-    async remove(id) {
+    async remove(id, userId) {
         this._checkId(id)
-        const result = await this.model.findByIdAndRemove({ _id: id })
+        const result = await this.model.findByIdAndRemove({ _id: id, owner: userId }).select("-__v")
         return result
     }
 }

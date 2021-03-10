@@ -5,7 +5,8 @@ const notesService = new NotesService();
 
 const getAll = async (req, res, next) => {
     try {
-        const notes = await notesService.getAll()
+        const userId = req.user.id
+        const notes = await notesService.getAll(userId)
         res.status(HttpCode.OK).json({
             status: 'success',
             code: HttpCode.OK,
@@ -20,7 +21,8 @@ const getAll = async (req, res, next) => {
 
 const getByID = async (req, res, next) => {
     try {
-        const note = await notesService.getByID(req.params)
+        const userId = req.user.id
+        const note = await notesService.getByID(req.params, userId)
 
         if (note) {
             res.status(HttpCode.OK).json({
@@ -44,7 +46,8 @@ const getByID = async (req, res, next) => {
 
 const create = async (req, res, next) => {
     try {
-        const note = await notesService.create(req.body)
+        const userId = req.user.id
+        const note = await notesService.create(req.body, userId)
         res.status(HttpCode.CREATED).json({
             status: 'success',
             code: HttpCode.CREATED,
@@ -59,7 +62,8 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const note = await notesService.update(req.params, req.body)
+        const userId = req.user.id
+        const note = await notesService.update(req.params, req.body, userId)
 
         if (note) {
             res.status(HttpCode.OK).json({
@@ -83,7 +87,8 @@ const update = async (req, res, next) => {
 
 const patch = async (req, res, next) => {
     try {
-        const note = await notesService.update(req.params, req.body)
+        const userId = req.user.id
+        const note = await notesService.update(req.params, req.body, userId)
 
         if (note) {
             res.status(HttpCode.OK).json({
@@ -107,7 +112,8 @@ const patch = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
     try {
-        const note = await notesService.remove(req.params)
+        const userId = req.user.id
+        const note = await notesService.remove(req.params, userId)
 
         if (note) {
             res.status(HttpCode.OK).json({

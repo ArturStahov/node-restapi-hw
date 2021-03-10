@@ -3,12 +3,23 @@ const cors = require('cors')
 const fs = require("fs")
 const path = require('path')
 const logger = require('morgan');
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const { HttpCode } = require('./helpers/constants.js')
 const routerNotes = require('./api/notes')
-
+const routerUsers = require('./api/users')
+const { ErrorHandler } = require('./helpers/errorHandler')
 const app = express()
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" })
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    handler: (req, res, next) => {
+        next(new ErrorHandler(HttpCode.BAD_REQUEST, 'Error limit query!', 'limit query!'))
+    }
+});
 
 app.use(logger('dev'))
 app.use(logger("common", {
@@ -17,9 +28,13 @@ app.use(logger("common", {
     skip: (req, res) => res.statusCode < 400
 }))
 
+
+app.use(helmet());
 app.use(cors())
-app.use(express.json())
+app.use(express.json({ limit: 10000 }))
+app.use('/api/', limiter)
 app.use('/api/notes', routerNotes)
+app.use('/api/users', routerUsers)
 
 
 //error 404
