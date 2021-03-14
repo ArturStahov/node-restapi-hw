@@ -21,6 +21,11 @@ class UserServices {
         const data = await this.repositories.users.findByID(id)
         return data
     }
+
+    async updateAvatar(id, avatar) {
+        const data = await this.repositories.users.updateAvatar(id, avatar)
+        return data
+    }
 }
 
 module.exports = UserServices

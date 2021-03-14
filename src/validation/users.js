@@ -34,3 +34,16 @@ const validate = (schema, body, next) => {
 module.exports.validateCreateUser = (req, res, next) => {
     return validate(schemaCreate, req.body, next)
 }
+
+module.exports.validateUploadAvatar = (req, res, next) => {
+    if (!req.file) {
+        return res.status(HttpCode.BAD_REQUEST).json({
+            status: 'error',
+            code: HttpCode.BAD_REQUEST,
+            data: 'Bad request',
+            message: 'Field of "avatar" not found!'
+        })
+    }
+    next()
+}
+
