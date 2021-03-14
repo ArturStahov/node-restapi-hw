@@ -34,6 +34,11 @@ class UsersRepository {
         return result
     }
 
+    async updateAvatar(id, avatar) {
+        this._checkId(id)
+        await this.model.updateOne({ _id: id }, { avatar })
+    }
+
 }
 
 module.exports = UsersRepository

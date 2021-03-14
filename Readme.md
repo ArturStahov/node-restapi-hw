@@ -1,9 +1,10 @@
 ## ReastApi Node
 
-### branch 04-auth-mongodb: restApi with mongodb
+### branch 05-images-native: restApi with mongodb
 
 - CRUD private collection;
 - user signup login logout;
+- add user avatar;
 
 ### use libs:
 
@@ -21,3 +22,6 @@
 - bcryptjs;
 - helmet;
 - express-rate-limit;
+- multer;
+- gravatar;
+- jimp;
