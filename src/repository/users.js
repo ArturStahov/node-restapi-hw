@@ -39,6 +39,16 @@ class UsersRepository {
         await this.model.updateOne({ _id: id }, { avatar })
     }
 
+    async findByVerifyToken(verifyToken) {
+        const result = await this.model.findOne({ verifyToken }).select("-__v")
+        return result
+    }
+
+    async updateVerifyToken(id, verify, verifyToken) {
+        this._checkId(id)
+        await this.model.findOneAndUpdate({ _id: id }, { verifyToken, verify })
+    }
+
 }
 
 module.exports = UsersRepository

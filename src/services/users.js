@@ -26,6 +26,16 @@ class UserServices {
         const data = await this.repositories.users.updateAvatar(id, avatar)
         return data
     }
+
+    async findByVerifyToken(token) {
+        const data = await this.repositories.users.findByVerifyToken(token)
+        return data
+    }
+
+    async updateVerifyToken(id, value, token) {
+        const data = await this.repositories.users.updateVerifyToken(id, value, token)
+        return data
+    }
 }
 
 module.exports = UserServices

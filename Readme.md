@@ -1,9 +1,10 @@
 ## ReastApi Node
 
-### branch 05-images-native: restApi with mongodb
+### branch 06-email: restApi with mongodb
 
 - CRUD private collection;
 - user signup login logout;
+- authorization with e-mail
 - add user avatar;
 
 ### use libs:
@@ -25,3 +26,6 @@
 - multer;
 - gravatar;
 - jimp;
+- @sendgrid/mail;
+- nanoid;
+- mailgen;
