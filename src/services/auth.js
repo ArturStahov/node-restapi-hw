@@ -17,6 +17,11 @@ class AuthServices {
         if (!user || !isValidPassword) {
             return null
         }
+
+        if (!user.verify) {
+            throw new Error('You don`t verify you E-mail!')
+        }
+
         const id = user.id
         const payload = { id }
         const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' })

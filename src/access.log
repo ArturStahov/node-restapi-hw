@@ -11,3 +11,6 @@
 ::1 - - [14/Mar/2021:18:30:45 +0000] "PATCH /api/users/avatar HTTP/1.1" 400 93
 ::1 - - [14/Mar/2021:18:30:47 +0000] "PATCH /api/users/avatar HTTP/1.1" 400 93
 ::1 - - [14/Mar/2021:18:30:48 +0000] "PATCH /api/users/avatar HTTP/1.1" 400 93
+::1 - - [21/Mar/2021:10:27:13 +0000] "GET /api/users/verify/02QHwDd_NJY0nct-BnVqg HTTP/1.1" 400 77
+::1 - - [21/Mar/2021:10:27:14 +0000] "GET /favicon.ico HTTP/1.1" 404 89
+::1 - - [21/Mar/2021:10:33:50 +0000] "GET /api/users/verify/02QHwDd_NJY0nct-BnVqg HTTP/1.1" 400 77

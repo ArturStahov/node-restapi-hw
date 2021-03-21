@@ -10,6 +10,7 @@ router.post('/registration', accountLimiter, validateCreateUser, controllersUser
 router.post('/login', controllersUsers.login)
 router.post('/logout', guard, controllersUsers.logout)
 router.patch('/avatar', guard, upload.single('avatar'), validateUploadAvatar, controllersUsers.avatars)
+router.get('/verify/:token', controllersUsers.verify)
 
 
 module.exports = router

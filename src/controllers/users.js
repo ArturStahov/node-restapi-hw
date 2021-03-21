@@ -1,4 +1,4 @@
-const { AuthService, UserService } = require('../services')
+const { AuthService, UserService, EmailService } = require('../services')
 const fs = require('fs').promises
 const path = require('path')
 const Jimp = require('jimp');
@@ -6,10 +6,12 @@ require('dotenv').config()
 const { HttpCode } = require('../helpers/constants.js')
 const ErrorHandler = require('../helpers/errorHandler')
 const createFolderIsExist = require('../helpers/createDir')
+const { nanoid } = require('nanoid')
 const serviceUser = new UserService()
 const serviceAuth = new AuthService()
 
 const AVATARS_DIR = process.env.AVATARS_DIR
+
 
 const reg = async (req, res, next) => {
     try {
@@ -23,7 +25,10 @@ const reg = async (req, res, next) => {
                 message: 'Email is already use',
             })
         }
-        const newUser = await serviceUser.create({ name, email, password })
+        const verifyToken = nanoid()
+        const emailService = new EmailService(process.env.NODE_ENV)
+        await emailService.sendEmail(verifyToken, email, name)
+        const newUser = await serviceUser.create({ name, email, password, verify: false, verifyToken })
 
         return res.status(HttpCode.CREATED).json({
             status: 'success',
@@ -64,6 +69,30 @@ const logout = async (req, res, next) => {
         const id = req.user.id
         await serviceAuth.logout(id)
         return res.status(HttpCode.NO_CONTENT).json({})
+    } catch (error) {
+        next(error)
+    }
+}
+
+const verify = async (req, res, next) => {
+    try {
+        const user = await serviceUser.findByVerifyToken(req.params.token)
+
+        if (user) {
+            await serviceUser.updateVerifyToken(user.id, true, null)//userID,isVerify,up token in null
+            return res.status(HttpCode.OK).json({
+                status: 'success',
+                code: HttpCode.OK,
+                message: 'Verification successful!'
+            })
+        }
+
+        return res.status(HttpCode.BAD_REQUEST).json({
+            status: 'error',
+            code: HttpCode.BAD_REQUEST,
+            data: 'Bad request',
+            message: 'link is not valid'
+        })
     } catch (error) {
         next(error)
     }
@@ -111,5 +140,6 @@ module.exports = {
     reg,
     login,
     logout,
-    avatars
+    avatars,
+    verify
 }
